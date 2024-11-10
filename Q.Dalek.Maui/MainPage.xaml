@@ -13,33 +13,33 @@
                 Aspect="AspectFit" />
             
             <Button
-                x:Name="TestBtn"
+                x:Name="BtnTestWakeWord"
                 Text="Test wake word dalek"                
-                Clicked="OnTestClicked"
+                Clicked="OnBtnTestWakeWordClicked"
                 HorizontalOptions="Fill" />
 
             <Button
-                x:Name="TestBtn2"
+                x:Name="BtnTestUDPPacket"
                 Text="Send UDP packet"                
-                Clicked="TestBtn2_Clicked"
+                Clicked="OnBtnTestUDPPacket_Clicked"
                 HorizontalOptions="Fill" />
 
             <Button
-                x:Name="TestBtn3"
+                x:Name="BtnTestVoskRecognition"
                 Text="Test Vosk with Portaudio"                
-                Clicked="TestBtn3_Clicked"
+                Clicked="OnBtnTestVoskRecognition_Clicked"
                 HorizontalOptions="Fill" />
 
             <Button
-                x:Name="TestBtn4"
+                x:Name="BtnTestMicrophoneFlicker"
                 Text="Test NAudio light flicker (Microphone)"                
-                Clicked="TestBtn4_Clicked"
+                Clicked="OnBtnTestMicrophoneFlicker_Clicked"
                 HorizontalOptions="Fill" />
 
             <Button
-                x:Name="TestBtn6"
+                x:Name="BtnTestWavefileFlicker"
                 Text="Test NAudio light flicker (Wav file)"                
-                Clicked="TestBtn6_Clicked"
+                Clicked="OnBtnTestWavefileFlicker_Clicked"
                 HorizontalOptions="Fill" />
 
             <Button

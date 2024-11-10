@@ -24,16 +24,17 @@ namespace Q.Dalek.Maui
         
         string vosk_model = "";
         string wakeword_path = "";
+        string recognition_path = "";
         string wakeword_model = "";
         string wakeword_params = "";
-        string tempfile = "";
+        string tempWavefile = "";
+        string dalek_path = "";
         
         public MainPage()
         {
             InitializeComponent();
 
-            SetPathsToOS();
-            
+            SetPathsToOS();            
         }
 
         private void SetPathsToOS()
@@ -42,16 +43,19 @@ namespace Q.Dalek.Maui
 
             if (isWindows)
             {
-                vosk_model = "C:\\3D\\Dalek\\recognition\\vosk-model-small-en-us-0.15";
-                wakeword_path = "C:\\3D\\Dalek\\wakeword\\";
+                dalek_path = "C:\\3D\\Dalek\\";
+                recognition_path = dalek_path + "recognition\\";                
+                wakeword_path = dalek_path + "wakeword\\";
                 wakeword_model = "daal-lek_nl_windows_v3_0_0.ppn";                
-                tempfile = "C:\\3D\\Dalek\\recognition\\test.wav";
             } else if (isLinux) {
-                vosk_model = "/mnt/data/Dalek/vosk-model-small-en-us-0.15";
-                wakeword_path = "/mnt/data/Dalek/";
-                wakeword_model = "daal-lek_nl_raspberry-pi_v3_0_0.ppn";
-                tempfile = "/mnt/data/Dalek/recognition.wav";
+                dalek_path = "/mnt/data/Dalek/";
+                recognition_path = dalek_path + "recognition/";
+                wakeword_path = dalek_path + "wakeword/";                
+                wakeword_model = "daal-lek_nl_raspberry-pi_v3_0_0.ppn";                                
             }
+
+            vosk_model = recognition_path + "vosk - model-small-en-us-0.15";
+            tempWavefile = recognition_path + "recognition.wav";
         }
                 
         private static ArduinoMessage? SendUDPPacket(IPAddress target, string command)
@@ -84,7 +88,7 @@ namespace Q.Dalek.Maui
             return null;
         }
 
-        private void OnTestClicked(object sender, EventArgs e)
+        private void OnBtnTestWakeWordClicked(object sender, EventArgs e)
         {                        
             List<string> list = [wakeword_path + wakeword_model];
             List<float> sensitivities = [(float)0.5];
@@ -117,12 +121,12 @@ namespace Q.Dalek.Maui
             });
         }
 
-        private void TestBtn2_Clicked(object sender, EventArgs e)
+        private void OnBtnTestUDPPacket_Clicked(object sender, EventArgs e)
         {
-            MainPage.SendUDPPacket(head,"lights");
+            SendUDPPacket(head,"lights");
         }
 
-        private void TestBtn3_Clicked(object sender, EventArgs e)
+        private void OnBtnTestVoskRecognition_Clicked(object sender, EventArgs e)
         {
             //this is working fine
             //TODO record wav file with opentk when listening, untill long pause detection
@@ -131,7 +135,7 @@ namespace Q.Dalek.Maui
             //TODO it would have to listen to everyghing, als long pause is not detected
 
             VoskRecognizer rec = new(new Model(vosk_model), 16000.0f);
-            using (Stream source = File.OpenRead(tempfile))
+            using (Stream source = File.OpenRead(tempWavefile))
             {
                 byte[] buffer = new byte[4096];
                 int bytesRead;
@@ -150,7 +154,7 @@ namespace Q.Dalek.Maui
             Debug.WriteLine(rec.FinalResult());
         }
 
-        private void TestBtn4_Clicked(object sender, EventArgs e)
+        private void OnBtnTestMicrophoneFlicker_Clicked(object sender, EventArgs e)
         {
             var waveIn = new NAudio.Wave.WaveInEvent
             {
@@ -179,10 +183,10 @@ namespace Q.Dalek.Maui
             }
         }
 
-        private void TestBtn5_Clicked(object sender, EventArgs e)
+        private void OnBtnTestWavefileFlicker_Clicked(object sender, EventArgs e)
         {
             //TODO this flickers on wav output, so when Dalek responds, we can use this function to make the lights flicker
-            using Stream source = File.OpenRead(tempfile);
+            using Stream source = File.OpenRead(tempWavefile);
             byte[] buffer = new byte[3096];
             int bytesRead;
             int val;
@@ -201,17 +205,17 @@ namespace Q.Dalek.Maui
             SendUDPPacket(head,"lightsoff");
         }
 
-        private void TestBtn6_Clicked(object sender, EventArgs e)
+        private void TestBtn5_Clicked(object sender, EventArgs e)
         {
             //close, but no cigar, cannot seem to play audio whilst doing the dalek flickering lights
 
             //DalekStream (waveStream)
-            DalekStream waveStream = new NAudio.Wave.WaveFileReader(tempfile);
+            DalekStream waveStream = new WaveFileReader(tempWavefile);
             
             //DalekStream dalekStream = new NAudio.Wave.WaveFileReader(tempfile);
-            WaveChannel32 volumeStream = new WaveChannel32(waveStream);
+            WaveChannel32 volumeStream = new(waveStream);
 
-            WaveOutEvent player = new WaveOutEvent();
+            WaveOutEvent player = new();
 
             player.Init(volumeStream);
 

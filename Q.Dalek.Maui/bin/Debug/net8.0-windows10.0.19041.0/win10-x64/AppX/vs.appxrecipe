@@ -29,7 +29,7 @@
     <AppXManifest Include="C:\Users\woute.FIRST\source\repos\Q.Dalek.Maui\Q.Dalek.Maui\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\AppxManifest.xml">
       <PackagePath>AppxManifest.xml</PackagePath>
       <ReRegisterAppIfChanged>true</ReRegisterAppIfChanged>
-      <Modified>2024-11-10T13:45:02.184</Modified>
+      <Modified>2024-11-10T15:37:56.790</Modified>
     </AppXManifest>
   </ItemGroup>
   <ItemGroup>
@@ -43,11 +43,11 @@
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\woute.FIRST\source\repos\Q.Dalek.Maui\Q.Dalek.Maui\bin\Debug\net8.0-windows10.0.19041.0\win10-x64\Q.Dalek.Maui.dll">
       <PackagePath>Q.Dalek.Maui.dll</PackagePath>
-      <Modified>2024-11-10T13:45:00.711</Modified>
+      <Modified>2024-11-10T15:37:56.130</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\woute.FIRST\source\repos\Q.Dalek.Maui\Q.Dalek.Maui\obj\Debug\net8.0-windows10.0.19041.0\win10-x64\apphost.exe">
       <PackagePath>Q.Dalek.Maui.exe</PackagePath>
-      <Modified>2024-11-10T13:45:00.754</Modified>
+      <Modified>2024-11-10T15:37:56.135</Modified>
     </AppxPackagedFile>
     <AppxPackagedFile Include="C:\Users\woute.FIRST\source\repos\Q.Dalek.Maui\Q.Dalek.Maui\Resources\Raw\AboutAssets.txt">
       <PackagePath>AboutAssets.txt</PackagePath>
