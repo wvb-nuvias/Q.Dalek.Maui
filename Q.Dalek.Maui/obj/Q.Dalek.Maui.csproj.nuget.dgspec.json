@@ -32,7 +32,8 @@
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {},
-          "https://nuget.devexpress.com/97PF5s393H4fl964j3DGZXAulRIcjq4LMepyT7DrX7QsxoLRPN/api/v3/index.json": {}
+          "https://nuget.devexpress.com/97PF5s393H4fl964j3DGZXAulRIcjq4LMepyT7DrX7QsxoLRPN/api/v3/index.json": {},
+          "https://pkgs.dev.azure.com/InfinigateHolding/_packaging/InfinigateHolding/nuget/v3/index.json": {}
         },
         "frameworks": {
           "net8.0-android34.0": {
@@ -93,6 +94,22 @@
               "target": "Package",
               "version": "[8.0.8, )"
             },
+            "NAudio": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
+            "OpenTK": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "Porcupine": {
+              "target": "Package",
+              "version": "[3.0.4, )"
+            },
+            "PortAudioSharp2": {
+              "target": "Package",
+              "version": "[1.0.4, )"
+            },
             "Vosk": {
               "target": "Package",
               "version": "[0.3.38, )"
@@ -147,6 +164,22 @@
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.8, )"
+            },
+            "NAudio": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
+            "OpenTK": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "Porcupine": {
+              "target": "Package",
+              "version": "[3.0.4, )"
+            },
+            "PortAudioSharp2": {
+              "target": "Package",
+              "version": "[1.0.4, )"
             },
             "Vosk": {
               "target": "Package",
@@ -203,6 +236,22 @@
               "target": "Package",
               "version": "[8.0.8, )"
             },
+            "NAudio": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
+            "OpenTK": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "Porcupine": {
+              "target": "Package",
+              "version": "[3.0.4, )"
+            },
+            "PortAudioSharp2": {
+              "target": "Package",
+              "version": "[1.0.4, )"
+            },
             "Vosk": {
               "target": "Package",
               "version": "[0.3.38, )"
@@ -252,6 +301,22 @@
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[8.0.8, )"
+            },
+            "NAudio": {
+              "target": "Package",
+              "version": "[2.2.1, )"
+            },
+            "OpenTK": {
+              "target": "Package",
+              "version": "[4.4.0, )"
+            },
+            "Porcupine": {
+              "target": "Package",
+              "version": "[3.0.4, )"
+            },
+            "PortAudioSharp2": {
+              "target": "Package",
+              "version": "[1.0.4, )"
             },
             "Vosk": {
               "target": "Package",
