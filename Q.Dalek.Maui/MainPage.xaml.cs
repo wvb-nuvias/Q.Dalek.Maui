@@ -21,20 +21,26 @@ namespace Q.Dalek.Maui
         private readonly string pv_access_key = "ShdtJT+O41vETv5EkR+eIRtirZjPe6ittLRTUVKHdKrg9kI1XmzlnA==";
         private readonly IPAddress head = IPAddress.Parse("10.42.0.201");
         private readonly IPAddress body = IPAddress.Parse("10.42.0.202");
-        
-        string vosk_model = "";
-        string wakeword_path = "";
-        string recognition_path = "";
-        string wakeword_model = "";
-        string wakeword_params = "";
-        string tempWavefile = "";
-        string dalek_path = "";
-        
+
+        private string vosk_model = "";
+        private string wakeword_path = "";
+        private string recognition_path = "";
+        private string wakeword_model = "";
+        private string wakeword_params = "";
+        private string tempWavefile = "";
+        private string dalek_path = "";
+
+        private bool isListeningForWakeword = true;        
+        private bool isRecording = false;
+        private int silenceTimeoutMs = 3000;
+        private Timer silenceTimer = null;
+
         public MainPage()
         {
             InitializeComponent();
 
-            SetPathsToOS();            
+            SetPathsToOS();
+            StartListening();
         }
 
         private void SetPathsToOS()
@@ -88,8 +94,8 @@ namespace Q.Dalek.Maui
             return null;
         }
 
-        private void OnBtnTestWakeWordClicked(object sender, EventArgs e)
-        {                        
+        private void StartListening()
+        {
             List<string> list = [wakeword_path + wakeword_model];
             List<float> sensitivities = [(float)0.5];
             string modelPath = wakeword_path + wakeword_params;
@@ -101,9 +107,8 @@ namespace Q.Dalek.Maui
                 ALCaptureDevice captureDevice = ALC.CaptureOpenDevice(null, porcupine.SampleRate, ALFormat.Mono16, porcupine.FrameLength * 2);
                 {
                     ALC.CaptureStart(captureDevice);
-                    //TODO exit when detected
-
-                    while (true)
+                    
+                    while (isListeningForWakeword)
                     {
                         int samplesAvailable = ALC.GetAvailableSamples(captureDevice);
                         if (samplesAvailable > porcupine.FrameLength)
@@ -112,28 +117,58 @@ namespace Q.Dalek.Maui
                             int keywordIndex = porcupine.Process(framebuffer);
                             if (keywordIndex >= 0)
                             {
-                                //wakeword is detected
-                                Debug.WriteLine("I hear you...");
+                                isListeningForWakeword = false;                                
                             }
                         }
                     }
+
+                    ALC.CaptureStop(captureDevice);
                 }
             });
+
+            RecordVoiceUntillStopped();
         }
 
-        private void OnBtnTestUDPPacket_Clicked(object sender, EventArgs e)
+        private void RecordVoiceUntillStopped()
         {
-            SendUDPPacket(head,"lights");
+            List<string> list = [wakeword_path + wakeword_model];
+            List<float> sensitivities = [(float)0.5];
+            string modelPath = wakeword_path + wakeword_params;
+
+            //TODO set samplerate for the temp wave file, and the buffer, and the length
+            //TODO delete the existing wave file
+
+            Task.Factory.StartNew(() =>
+            {
+                using Porcupine porcupine = Porcupine.FromKeywordPaths(pv_access_key, list, modelPath);
+                short[] framebuffer = new short[porcupine.FrameLength];
+                ALCaptureDevice captureDevice = ALC.CaptureOpenDevice(null, porcupine.SampleRate, ALFormat.Mono16, porcupine.FrameLength * 2);
+                {
+                    ALC.CaptureStart(captureDevice);
+                    
+                    while (isRecording)
+                    {
+                        int samplesAvailable = ALC.GetAvailableSamples(captureDevice);
+                        if (samplesAvailable > porcupine.FrameLength)
+                        {
+                            ALC.CaptureSamples(captureDevice, ref framebuffer[0], porcupine.FrameLength);
+                            //TODO check if the buffer is empty?
+                            //TODO save the sample to temporary file
+                            //check if ther is a pause (time the start of the capture and end)
+                            //and if more then one sample is empty (need check for this)
+                            //else stop recording
+                            isRecording = false;
+                        }
+                    }
+
+                    ALC.CaptureStop(captureDevice);
+                }
+            });
+
+            InterpretRecordedWaveFile();
         }
 
-        private void OnBtnTestVoskRecognition_Clicked(object sender, EventArgs e)
-        {
-            //this is working fine
-            //TODO record wav file with opentk when listening, untill long pause detection
-            //TODO re-start listener after 
-            //TODO if the pause between commands is too long, then start listening for wake word again
-            //TODO it would have to listen to everyghing, als long pause is not detected
-
+        private void InterpretRecordedWaveFile() {
             VoskRecognizer rec = new(new Model(vosk_model), 16000.0f);
             using (Stream source = File.OpenRead(tempWavefile))
             {
@@ -152,6 +187,30 @@ namespace Q.Dalek.Maui
                 }
             }
             Debug.WriteLine(rec.FinalResult());
+
+            //TODO check for fixed database messages, if so act on it here, before asking AI
+            //TODO ask a free AI for a response? determine the context?
+            //TODO save the interpreted response to the same database, with context, so same response doesn't have to be looked up
+            //TODO database table with same meaning words etc... so text is not always the same, and it auto learns
+            //convert the response to wav file answer and do dalekspeak (flciker on the wav file)
+            //TODO ask for more ? then go to recording again, if yes, or new question continu the loop
+            //TODO is no, then go trough listening method again
+        }
+
+
+        private void OnBtnTestWakeWordClicked(object sender, EventArgs e)
+        {                        
+            StartListening();
+        }
+
+        private void OnBtnTestUDPPacket_Clicked(object sender, EventArgs e)
+        {
+            SendUDPPacket(head,"lights");
+        }
+
+        private void OnBtnTestVoskRecognition_Clicked(object sender, EventArgs e)
+        {
+            InterpretRecordedWaveFile();
         }
 
         private void OnBtnTestMicrophoneFlicker_Clicked(object sender, EventArgs e)

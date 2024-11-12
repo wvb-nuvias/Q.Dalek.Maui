@@ -18,7 +18,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Q.Dalek.Maui")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+68f3f6e02cf9b1020ed3161c04a82fa776214809")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+ae0acd6a684a032c50f10b8c3bf67064fbdb570c")]
 [assembly: System.Reflection.AssemblyProductAttribute("Q.Dalek.Maui")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Q.Dalek.Maui")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
